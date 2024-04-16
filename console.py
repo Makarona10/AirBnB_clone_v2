@@ -128,7 +128,6 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[args[0]]()
         if len(args) > 1:
             params = args[1].split()
-            print(params)
             for p in params:
                 [k, val] = p.split('=')
                 if (val[0] == '"' and val[-1] == '"'):
