@@ -119,37 +119,37 @@ class HBNBCommand(cmd.Cmd):
         pattern = """(^\w+)((?:\s+\w+=[^\s]+)+)?"""
         m = re.match(pattern, args)
         args = [s for s in m.groups() if s] if m else []
+
         if not args:
             print("** class name missing **")
             return
-        elif args[0] not in HBNBCommand.classes:
+
+        className = args[0]
+
+        if className not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args[0]]()
-        if len(args) > 1:
-            params = args[1].split()
-            for p in params:
-                [k, val] = p.split('=')
-                if (val[0] == '"' and val[-1] == '"'):
-                    val = val[1:-1].replace('_', ' ')
-                elif ('.' in val):
-                    val = float(val)
-                else:
-                    val = int(val)
-        for p in params:
-            [k, val] = p.split('=')
-            setattr(new_instance, k, val)
 
-            # for arg in args[1:]:
-            #     if '=' in arg:
-            #         arg = arg.split('=')
-            #         f = hasattr(new_instance.__class__, arg[0])
-            #         print(f)
-            #         if (f == True):
-            #             setattr(new_instance, arg[0], arg[1])
-            #         else:
-            #             ("No attribute with that name.")
-        storage.save()
+        kwargs = dict()
+        if len(args) > 1:
+            params = args[1].split(" ")
+            params = [param for param in params if param]
+            for param in params:
+                [name, value] = param.split("=")
+                if value[0] == '"' and value[-1] == '"':
+                    value = value[1:-1].replace('_', ' ')
+                elif '.' in value:
+                    value = float(value)
+                else:
+                    value = int(value)
+                kwargs[name] = value
+
+        new_instance = HBNBCommand.classes[className]()
+        
+        for attrName, attrValue in kwargs.items():
+            setattr(new_instance, attrName, attrValue) 
+
+        new_instance.save()
         print(new_instance.id)
 
     def help_create(self):
