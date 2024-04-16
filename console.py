@@ -126,6 +126,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         new_instance = HBNBCommand.classes[args[0]]()
+        dic = {}
         if len(args) > 1:
             params = args[1].split()
             for p in params:
@@ -136,9 +137,9 @@ class HBNBCommand(cmd.Cmd):
                     val = float(val)
                 else:
                     val = int(val)
-        for p in params:
-            [k, val] = p.split('=')
-            setattr(new_instance, k, val)
+                dic[k] = val
+        for attrName, attrValue in dic.items():
+            setattr(new_instance, attrName, attrValue) 
 
             # for arg in args[1:]:
             #     if '=' in arg:
