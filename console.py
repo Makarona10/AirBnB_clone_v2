@@ -150,7 +150,7 @@ class HBNBCommand(cmd.Cmd):
             #             setattr(new_instance, arg[0], arg[1])
             #         else:
             #             ("No attribute with that name.")
-        new_instance.save()
+        storage.save()
         print(new_instance.id)
 
     def help_create(self):
