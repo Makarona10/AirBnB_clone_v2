@@ -2,7 +2,6 @@
 """ Console Module """
 import cmd
 import sys
-import re
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -11,7 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-from sqlalchemy import Column, String
+import re
 
 
 class HBNBCommand(cmd.Cmd):
@@ -117,40 +116,41 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        pattern = """(^\w+)((?:\s+\w+=[^\s]+)+)?"""
+        pattern = "(^\w+)((?:\s+\w+=[^\s]+)+)?"
         m = re.match(pattern, args)
         args = [s for s in m.groups() if s] if m else []
-
         if not args:
             print("** class name missing **")
             return
-
-        className = args[0]
-
-        if className not in HBNBCommand.classes:
+        elif args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-
-        kwargs = dict()
+        new_instance = HBNBCommand.classes[args[0]]()
+        dic = {}
         if len(args) > 1:
-            params = args[1].split(" ")
-            params = [param for param in params if param]
-            for param in params:
-                [name, value] = param.split("=")
-                if value[0] == '"' and value[-1] == '"':
-                    value = value[1:-1].replace('_', ' ')
-                elif '.' in value:
-                    value = float(value)
+            params = args[1].split()
+            for p in params:
+                [k, val] = p.split('=')
+                if (val[0] == '"' and val[-1] == '"'):
+                    val = val[1:-1].replace('_', ' ')
+                elif ('.' in val):
+                    val = float(val)
                 else:
-                    value = int(value)
-                kwargs[name] = value
-
-        new_instance = HBNBCommand.classes[className]()
-        
-        for attrName, attrValue in kwargs.items():
+                    val = int(val)
+                dic[k] = val
+        for attrName, attrValue in dic.items():
             setattr(new_instance, attrName, attrValue) 
 
-        new_instance.save()
+            # for arg in args[1:]:
+            #     if '=' in arg:
+            #         arg = arg.split('=')
+            #         f = hasattr(new_instance.__class__, arg[0])
+            #         print(f)
+            #         if (f == True):
+            #             setattr(new_instance, arg[0], arg[1])
+            #         else:
+            #             ("No attribute with that name.")
+        storage.save()
         print(new_instance.id)
 
     def help_create(self):
@@ -233,7 +233,7 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage.all().items():
+            for k, v in storage._FileStorage__objects.items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
