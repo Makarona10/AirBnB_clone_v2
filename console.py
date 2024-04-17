@@ -116,7 +116,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        pattern = """(^\w+)((?:\s+\w+=[^\s]+)+)?"""
+        pattern = "(^\w+)((?:\s+\w+=[^\s]+)+)?"
         m = re.match(pattern, args)
         args = [s for s in m.groups() if s] if m else []
         if not args:
