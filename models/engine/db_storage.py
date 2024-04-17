@@ -26,7 +26,7 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """Returns a dictionary of models currently in database"""
+        """Returns a dictionary of objects of a class currently in database"""
         dic = dict()
         if (cls):
             if type(cls) == str:
@@ -59,9 +59,13 @@ class DBStorage:
             self.__session.delete(obj)
     
     def reload(self):
-        """Create current database session
+        """Creates current database session
         from the engine using a sessionmaker"""
         self.__session = Base.metadata.create_all(self.__engine)
         Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
         session = scoped_session(Session)
         self.__session = session()
+
+    def close(self):
+        """Closes session"""
+        self.__session.close()
