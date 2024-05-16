@@ -31,5 +31,11 @@ def python(text="is cool"):
     return f"Python {escape(text.replace('_', ' '))}"
 
 
+@app.route('/number/<n>')
+def isInt(n):
+    if isinstance(n, int):
+        return f"{escape(n)} is a number"
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

@@ -16,7 +16,7 @@ def home():
 
 @app.route('/hbnb', strict_slashes=False)
 def hbnb():
-    """The homepage function"""
+    """hbnb function"""
     return "HBNB"
 
 
