@@ -3,7 +3,7 @@
 """A script that starts a Flask web application"""
 
 
-from flask import Flask
+from flask import Flask, render_template
 from markupsafe import escape
 
 app = Flask(__name__)
@@ -35,6 +35,12 @@ def python(text="is cool"):
 def isInt(n):
     if isinstance(n, int):
         return f"{escape(n)} is a number"
+
+
+@app.route('/number_template/<n>', strict_slashes=False)
+def template(n):
+    if isinstance(n, int):
+        return render_template('5-number.html', number=n)
 
 
 if __name__ == '__main__':
