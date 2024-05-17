@@ -20,23 +20,21 @@ class DBStorage:
     __session = None
 
     def __init__(self):
-        """Create engine and connect to database"""
+        """Establishes a connection with database using an engine"""
         host = getenv("HBNB_MYSQL_HOST")
         user = getenv("HBNB_MYSQL_USER")
         db = getenv("HBNB_MYSQL_DB")
         pwd = getenv("HBNB_MYSQL_PWD")
         envv = getenv("HBNB_ENV", "none")
 
-        # self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
-        #     user, pwd, host, db), pool_pre_ping=True)
-        self.__engine = create_engine(f'mysql+mysqldb://{user}:{pwd}@{host}/\
-                                      {db}', pool_pre_ping=True)
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
+            user, pwd, host, db), pool_pre_ping=True)
 
-        if envv == 'test':
+        if envv == "test":
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """returns a dictionary
+        """returns whole data
         Return:
             returns a dictionary of __object
         """
