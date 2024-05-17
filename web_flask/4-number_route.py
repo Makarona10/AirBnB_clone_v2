@@ -31,10 +31,10 @@ def python(text="is cool"):
     return f"Python {escape(text.replace('_', ' '))}"
 
 
-@app.route('/number/<n>', strict_slashes=False)
+@app.route('/number/<int:n>', strict_slashes=False)
 def isInt(n):
     if isinstance(n, int):
-        return f"{escape(n)} is a number"
+        return f"{n} is a number"
 
 
 if __name__ == '__main__':
