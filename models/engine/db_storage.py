@@ -29,8 +29,7 @@ class DBStorage:
 
         # self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
         #     user, pwd, host, db), pool_pre_ping=True)
-        self.__engine = create_engine(f'''mysql+mysqldb://
-                        {user}:{pwd}@{host}/{db}'''.format(pool_pre_ping=True))
+        self.__engine = create_engine(f'mysql+mysqldb://{user}:{pwd}@{host}/{db}'.format(pool_pre_ping=True))
 
         if envv == 'test':
             Base.metadata.drop_all(self.__engine)
