@@ -20,3 +20,8 @@
 # with app.test_request_context('/hello', method='GET'):
 #     assert request.path == '/hello'
 #     assert request.method == 'GET'
+dic = {
+    "k": {"K": "key1",
+    "V": "value1"}
+}
+print(dic.values())
